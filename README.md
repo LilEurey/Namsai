@@ -60,8 +60,8 @@ namsai/
 ### 1️⃣ Clone the Repository
 
 ```
-git clone https://github.com/namsai-org/namsai.git
-cd namsai
+git clone https://github.com/LilEurey/Namsai.git
+cd Namsai
 ```
 
 ### 2️⃣ Set Up the Flutter Frontend
