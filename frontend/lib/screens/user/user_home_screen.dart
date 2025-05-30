@@ -126,7 +126,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
             child: FloatingActionButton(
               backgroundColor: const Color(0xFF7CB8E2),
               onPressed: () {
-                // TODO: Add your action here
+                Navigator.pushNamed(context, '/reportStep1');
               },
               child: const Icon(Icons.add, size: 28),
             ),

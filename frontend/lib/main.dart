@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/first_page.dart';
+import 'package:frontend/screens/user/report_step1_water_type.dart';
+import 'package:frontend/screens/user/report_step2_location.dart';
+import 'package:frontend/screens/user/report_step3_submitted.dart';
 import 'screens/login_screen.dart';
 import 'screens/user/user_home_screen.dart';
 
@@ -24,6 +27,10 @@ class NamSaiApp extends StatelessWidget {
         '/': (context) => const FirstPage(),
         '/login': (context) => const LoginScreen(),
         '/userhome': (context) => const UserHomeScreen(),
+        '/reportStep1': (context) => const ReportStep1WaterType(),
+        '/reportStep2':
+            (context) => const ReportStep2Location(waterType: '', details: ''),
+        '/reportStep3': (context) => const ReportStep3Submitted(reportData: {}),
       },
     );
   }
