@@ -53,10 +53,12 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   ];
 
   void onBottomNavTap(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
-    // TODO: Navigation logic if needed
+    // Handle navigation for non-home tabs
+    if (index == 0) {
+      Navigator.pushNamed(context, '/usertips');
+    } else if (index == 2) {
+      Navigator.pushNamed(context, '/userprofile');
+    }
   }
 
   @override
@@ -88,7 +90,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       shadows: [Shadow(color: Colors.white70, blurRadius: 2)],
                     ),
                   ),
-                  NotificationButton(),
+                  NotificationButton(), // This already navigates internally
                 ],
               ),
             ),
@@ -97,7 +99,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
           // Reports list below the banner
           Padding(
             padding: const EdgeInsets.only(
-              top: 160 + 12,
+              top: 172,
               left: 20,
               right: 20,
               bottom: 80,
@@ -119,7 +121,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
             ),
           ),
 
-          // Floating Action Button bottom right
+          // Floating Action Button
           Positioned(
             bottom: 90,
             right: 24,
@@ -136,7 +138,6 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
       bottomNavigationBar: BottomNavBar(
         selectedIndex: selectedIndex,
         onTap: onBottomNavTap,
-        currentIndex: null,
       ),
     );
   }

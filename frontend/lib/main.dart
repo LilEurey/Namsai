@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/first_page.dart';
+import 'package:frontend/screens/user/notification_screen.dart';
 import 'package:frontend/screens/user/report_step1_water_type.dart';
 import 'package:frontend/screens/user/report_step2_location.dart';
 import 'package:frontend/screens/user/report_step3_submitted.dart';
@@ -31,6 +32,10 @@ class NamSaiApp extends StatelessWidget {
         '/reportStep2':
             (context) => const ReportStep2Location(waterType: '', details: ''),
         '/reportStep3': (context) => const ReportStep3Submitted(reportData: {}),
+        '/usernoti': (context) => const NotificationScreen(),
+        '/uservideotips': (context) => const NotificationScreen(),
+        '/userinfographictips': (context) => const NotificationScreen(),
+        '/userprofile': (context) => const NotificationScreen(),
       },
     );
   }

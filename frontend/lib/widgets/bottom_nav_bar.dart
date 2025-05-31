@@ -7,7 +7,7 @@ class BottomNavBar extends StatelessWidget {
   const BottomNavBar({
     Key? key,
     required this.selectedIndex,
-    required this.onTap, required currentIndex,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -16,15 +16,37 @@ class BottomNavBar extends StatelessWidget {
       currentIndex: selectedIndex,
       selectedItemColor: Colors.blue,
       unselectedItemColor: Colors.grey,
-      onTap: onTap,
+      onTap: (index) {
+        String? currentRoute = ModalRoute.of(context)?.settings.name;
+
+        if (index == 0 && currentRoute != '/uservideotips') {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/uservideotips',
+            (route) => false,
+          );
+        } else if (index == 1 && currentRoute != '/userhome') {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/userhome',
+            (route) => false,
+          );
+        } else if (index == 2 && currentRoute != '/userprofile') {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/userprofile',
+            (route) => false,
+          );
+        }
+
+        onTap(index); // Still call onTap to update selectedIndex state
+      },
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: 'Tips'),
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
       ],
-      // Optional: adjust type to fixed for equal spacing
       type: BottomNavigationBarType.fixed,
-      // Optional: elevate to cast a shadow
       elevation: 8,
     );
   }
