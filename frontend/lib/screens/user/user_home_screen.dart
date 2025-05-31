@@ -3,15 +3,8 @@ import 'package:frontend/widgets/bottom_nav_bar.dart';
 import 'package:frontend/widgets/notification_button.dart';
 import 'package:frontend/widgets/report_card.dart';
 
-class UserHomeScreen extends StatefulWidget {
+class UserHomeScreen extends StatelessWidget {
   const UserHomeScreen({Key? key}) : super(key: key);
-
-  @override
-  State<UserHomeScreen> createState() => _UserHomeScreenState();
-}
-
-class _UserHomeScreenState extends State<UserHomeScreen> {
-  int selectedIndex = 1; // Home tab selected
 
   final List<Map<String, dynamic>> reports = const [
     {
@@ -52,29 +45,20 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     },
   ];
 
-  void onBottomNavTap(int index) {
-    // Handle navigation for non-home tabs
-    if (index == 0) {
-      Navigator.pushNamed(context, '/usertips');
-    } else if (index == 2) {
-      Navigator.pushNamed(context, '/userprofile');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          // Banner Image at the top
+          // Banner image
           SizedBox(
             height: 160,
             width: double.infinity,
             child: Image.asset('assets/image/banner.png', fit: BoxFit.cover),
           ),
 
-          // Overlay for title and notification button on banner
+          // Title + Notification button
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -90,20 +74,15 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       shadows: [Shadow(color: Colors.white70, blurRadius: 2)],
                     ),
                   ),
-                  NotificationButton(), // This already navigates internally
+                  NotificationButton(),
                 ],
               ),
             ),
           ),
 
-          // Reports list below the banner
+          // Report list
           Padding(
-            padding: const EdgeInsets.only(
-              top: 172,
-              left: 20,
-              right: 20,
-              bottom: 80,
-            ),
+            padding: const EdgeInsets.only(top: 172, left: 20, right: 20, bottom: 80),
             child: ListView.separated(
               itemCount: reports.length,
               separatorBuilder: (_, __) => const SizedBox(height: 12),
@@ -121,7 +100,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
             ),
           ),
 
-          // Floating Action Button
+          // Add Report FAB
           Positioned(
             bottom: 90,
             right: 24,
@@ -135,10 +114,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavBar(
-        selectedIndex: selectedIndex,
-        onTap: onBottomNavTap,
-      ),
+
+      // Bottom Navigation
+      bottomNavigationBar: const BottomNavBar(currentIndex: 1),
     );
   }
 }

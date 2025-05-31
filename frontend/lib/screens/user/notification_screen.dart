@@ -2,17 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:frontend/widgets/bottom_nav_bar.dart';
 import 'package:frontend/widgets/notification_button.dart';
 
-class NotificationScreen extends StatefulWidget {
+class NotificationScreen extends StatelessWidget {
   const NotificationScreen({Key? key}) : super(key: key);
 
-  @override
-  State<NotificationScreen> createState() => _NotificationScreenState();
-}
-
-class _NotificationScreenState extends State<NotificationScreen> {
-  int selectedIndex = 1;
-
-  final List<Map<String, String>> notifications = [
+  final List<Map<String, String>> notifications = const [
     {
       'title': 'All Fixed!',
       'message': 'The issue you reported has been resolved. Thank you!',
@@ -26,21 +19,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
       'message': 'Your report has been received and is being reviewed.',
     },
   ];
-
-  void onBottomNavTap(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
-
-    // Navigation based on index
-    if (index == 0) {
-      Navigator.pushNamed(context, '/usertips');
-    } else if (index == 1) {
-      Navigator.pushNamed(context, '/userhome');
-    } else if (index == 2) {
-      Navigator.pushNamed(context, '/userprofile');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,30 +39,28 @@ class _NotificationScreenState extends State<NotificationScreen> {
             ),
           ),
 
-          // Title & bell
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    'Notification',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
+          // Header
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text(
+                  'Notification',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
                   ),
-                  NotificationButton(),
-                ],
-              ),
+                ),
+                NotificationButton(),
+              ],
             ),
           ),
 
           const SizedBox(height: 8),
 
-          // Notifications list
+          // Notifications List
           Expanded(
             child: ListView.separated(
               itemCount: notifications.length,
@@ -124,11 +100,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ],
       ),
 
-      // Bottom nav bar
-      bottomNavigationBar: BottomNavBar(
-        selectedIndex: selectedIndex,
-        onTap: onBottomNavTap,
-      ),
+      // Bottom Navigation Bar
+      bottomNavigationBar: const BottomNavBar(currentIndex: 1),
     );
   }
 }

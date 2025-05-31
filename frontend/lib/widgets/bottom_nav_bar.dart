@@ -1,53 +1,39 @@
 import 'package:flutter/material.dart';
 
 class BottomNavBar extends StatelessWidget {
-  final int selectedIndex;
-  final void Function(int) onTap;
+  final int currentIndex;
 
-  const BottomNavBar({
-    Key? key,
-    required this.selectedIndex,
-    required this.onTap,
-  }) : super(key: key);
+  const BottomNavBar({super.key, required this.currentIndex});
+
+  void _navigate(BuildContext context, int index) {
+    final routes = ['/uservideotips', '/userhome', '/userprofile'];
+    if (ModalRoute.of(context)?.settings.name != routes[index]) {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        routes[index],
+        (route) => false,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: selectedIndex,
-      selectedItemColor: Colors.blue,
-      unselectedItemColor: Colors.grey,
-      onTap: (index) {
-        String? currentRoute = ModalRoute.of(context)?.settings.name;
-
-        if (index == 0 && currentRoute != '/uservideotips') {
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            '/uservideotips',
-            (route) => false,
-          );
-        } else if (index == 1 && currentRoute != '/userhome') {
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            '/userhome',
-            (route) => false,
-          );
-        } else if (index == 2 && currentRoute != '/userprofile') {
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            '/userprofile',
-            (route) => false,
-          );
-        }
-
-        onTap(index); // Still call onTap to update selectedIndex state
-      },
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: 'Tips'),
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-      ],
-      type: BottomNavigationBarType.fixed,
+    return Material(
+      // Wrap with Material to apply elevation
       elevation: 8,
+      child: BottomNavigationBar(
+        currentIndex: currentIndex,
+        onTap: (index) => _navigate(context, index),
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        showUnselectedLabels: true,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: 'Tips'),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
+      ),
     );
   }
 }
