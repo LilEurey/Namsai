@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/widgets/report_step_progress_bar.dart';
+import 'package:frontend/widgets/user/report_step_progress_bar.dart';
 
 class ReportStep1WaterType extends StatefulWidget {
   const ReportStep1WaterType({Key? key}) : super(key: key);

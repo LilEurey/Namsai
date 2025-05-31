@@ -4,6 +4,9 @@ import 'package:frontend/screens/user/notification_screen.dart';
 import 'package:frontend/screens/user/report_step1_water_type.dart';
 import 'package:frontend/screens/user/report_step2_location.dart';
 import 'package:frontend/screens/user/report_step3_submitted.dart';
+import 'screens/admin/admin_home_screen.dart';
+
+import 'screens/admin/admin_reprort_detail.dart';
 import 'screens/login_screen.dart';
 import 'screens/user/user_home_screen.dart';
 
@@ -27,6 +30,8 @@ class NamSaiApp extends StatelessWidget {
       routes: {
         '/': (context) => const FirstPage(),
         '/login': (context) => const LoginScreen(),
+
+        //user
         '/userhome': (context) => const UserHomeScreen(),
         '/reportStep1': (context) => const ReportStep1WaterType(),
         '/reportStep2':
@@ -36,6 +41,10 @@ class NamSaiApp extends StatelessWidget {
         '/uservideotips': (context) => const NotificationScreen(),
         '/userinfographictips': (context) => const NotificationScreen(),
         '/userprofile': (context) => const NotificationScreen(),
+
+        //admin
+        '/adminhome': (context) => const AdminHomeScreen(),
+        '/adminreport': (context) => const AdminReportDetailScreen(status: ''),
       },
     );
   }

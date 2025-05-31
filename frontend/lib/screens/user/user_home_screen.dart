@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/widgets/bottom_nav_bar.dart';
-import 'package:frontend/widgets/notification_button.dart';
-import 'package:frontend/widgets/report_card.dart';
+import 'package:frontend/widgets/user/bottom_nav_bar.dart';
+import 'package:frontend/widgets/user/notification_button.dart';
+import 'package:frontend/widgets/user/report_card.dart';
 
 class UserHomeScreen extends StatelessWidget {
   const UserHomeScreen({Key? key}) : super(key: key);
