@@ -1,49 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/services/report_services.dart';
 import 'package:frontend/widgets/user/bottom_nav_bar.dart';
 import 'package:frontend/widgets/user/notification_button.dart';
 import 'package:frontend/widgets/user/report_card.dart';
 
-class UserHomeScreen extends StatelessWidget {
+class UserHomeScreen extends StatefulWidget {
   const UserHomeScreen({Key? key}) : super(key: key);
 
-  final List<Map<String, dynamic>> reports = const [
-    {
-      'name': 'Krit Tacho',
-      'title': 'Smelly water issue reported',
-      'description':
-          'The water in this area smells unpleasant and appears polluted. Please investigate the source.',
-      'date': 'May 26, 2025',
-      'status': 'In Progress',
-      'mapImage': 'assets/image/Maps.png',
-    },
-    {
-      'name': 'Krit Tacho',
-      'title': 'Smelly water issue reported',
-      'description':
-          'The water in this area smells unpleasant and appears polluted. Please investigate the source.',
-      'date': 'May 26, 2025',
-      'status': 'Pending',
-      'mapImage': 'assets/image/Maps.png',
-    },
-    {
-      'name': 'Krit Tacho',
-      'title': 'Smelly water issue reported',
-      'description':
-          'The water in this area smells unpleasant and appears polluted. Please investigate the source.',
-      'date': 'May 26, 2025',
-      'status': 'Pending',
-      'mapImage': 'assets/image/Maps.png',
-    },
-    {
-      'name': 'Krit Tacho',
-      'title': 'Smelly water issue reported',
-      'description':
-          'The water in this area smells unpleasant and appears polluted. Please investigate the source.',
-      'date': 'May 26, 2025',
-      'status': 'Pending',
-      'mapImage': 'assets/image/Maps.png',
-    },
-  ];
+  @override
+  State<UserHomeScreen> createState() => _UserHomeScreenState();
+}
+
+class _UserHomeScreenState extends State<UserHomeScreen> {
+  List<Map<String, dynamic>> reports = [];
+  bool isLoading = true;
+
+  final String token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODNiY2I3ZjFlZDZmN2VkZDhiZDhjMGEiLCJpYXQiOjE3NDg3OTM1ODMsImV4cCI6MTc0ODc5NzE4M30.jD02i-ree3Jd48QoFSJV_-7rysDPoNeReFzPWyT_0qc';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchReports();
+  }
+
+  Future<void> fetchReports() async {
+    try {
+      final fetchedReports = await ReportService.getUserReports(token);
+      setState(() {
+        reports = List<Map<String, dynamic>>.from(fetchedReports);
+        isLoading = false;
+      });
+    } catch (e) {
+      print('❌ Error fetching reports: $e');
+      setState(() => isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,14 +43,11 @@ class UserHomeScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          // Banner image
           SizedBox(
             height: 160,
             width: double.infinity,
             child: Image.asset('assets/image/banner.png', fit: BoxFit.cover),
           ),
-
-          // Title + Notification button
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -79,28 +68,53 @@ class UserHomeScreen extends StatelessWidget {
               ),
             ),
           ),
-
-          // Report list
           Padding(
-            padding: const EdgeInsets.only(top: 172, left: 20, right: 20, bottom: 80),
-            child: ListView.separated(
-              itemCount: reports.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 12),
-              itemBuilder: (context, index) {
-                final report = reports[index];
-                return ReportCard(
-                  name: report['name'],
-                  title: report['title'],
-                  description: report['description'],
-                  status: report['status'],
-                  date: report['date'],
-                  mapImage: report['mapImage'],
-                );
-              },
+            padding: const EdgeInsets.only(
+              top: 172,
+              left: 20,
+              right: 20,
+              bottom: 80,
             ),
-          ),
+            child:
+                isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : reports.isEmpty
+                    ? const Center(child: Text('No reports found'))
+                    : ListView.separated(
+                      itemCount: reports.length,
+                      separatorBuilder: (_, __) => const SizedBox(height: 12),
+                      itemBuilder: (context, index) {
+                        final report = reports[index];
 
-          // Add Report FAB
+                        String updatedAtFormatted = 'Unknown';
+                        try {
+                          final rawDate = report['updatedAt'];
+                          final thailandTime = DateTime.parse(
+                            rawDate,
+                          ).toUtc().add(const Duration(hours: 7));
+                          updatedAtFormatted =
+                              '${thailandTime.year}-${thailandTime.month.toString().padLeft(2, '0')}-${thailandTime.day.toString().padLeft(2, '0')} '
+                              '${thailandTime.hour.toString().padLeft(2, '0')}:${thailandTime.minute.toString().padLeft(2, '0')}';
+                        } catch (_) {}
+
+                        final coordinatesRaw =
+                            report['coordinates']['coordinates'] as List;
+                        final coordinates =
+                            coordinatesRaw
+                                .map((e) => (e as num).toDouble())
+                                .toList();
+
+                        return ReportCard(
+                          name: report['createdBy']?['name'] ?? 'Unknown',
+                          water_type: report['water_type'] ?? 'Water report',
+                          detail: report['detail'] ?? 'No description',
+                          status: report['status'] ?? 'Pending',
+                          updatedAt: updatedAtFormatted,
+                          coordinates: coordinates,
+                        );
+                      },
+                    ),
+          ),
           Positioned(
             bottom: 90,
             right: 24,
@@ -114,8 +128,6 @@ class UserHomeScreen extends StatelessWidget {
           ),
         ],
       ),
-
-      // Bottom Navigation
       bottomNavigationBar: const BottomNavBar(currentIndex: 1),
     );
   }
