@@ -5,10 +5,15 @@ import 'package:frontend/screens/user/report_step1_water_type.dart';
 import 'package:frontend/screens/user/report_step2_location.dart';
 import 'package:frontend/screens/user/report_step3_submitted.dart';
 import 'screens/admin/admin_home_screen.dart';
+import 'package:frontend/screens/user/user_water_tips.dart';
+import 'package:frontend/screens/user/user_home_screen.dart';
 
+import 'screens/signup_screen.dart';
+import 'screens/signup_sec_screen.dart';
+import 'screens/admin/admin_water_tips.dart';
 import 'screens/admin/admin_reprort_detail.dart';
 import 'screens/login_screen.dart';
-import 'screens/user/user_home_screen.dart';
+import 'screens/profile.dart';
 
 void main() {
   runApp(const NamSaiApp());
@@ -30,6 +35,9 @@ class NamSaiApp extends StatelessWidget {
       routes: {
         '/': (context) => const FirstPage(),
         '/login': (context) => const LoginScreen(),
+        '/profile': (context) => const ProfileScreen(),
+        '/signup': (context) => const SignupScreen(),
+        '/signup2': (context) => const Signup2Screen(),
 
         //user
         '/userhome': (context) => const UserHomeScreen(),
@@ -38,13 +46,12 @@ class NamSaiApp extends StatelessWidget {
             (context) => const ReportStep2Location(waterType: '', details: ''),
         '/reportStep3': (context) => const ReportStep3Submitted(reportData: {}),
         '/usernoti': (context) => const NotificationScreen(),
-        '/uservideotips': (context) => const NotificationScreen(),
-        '/userinfographictips': (context) => const NotificationScreen(),
-        '/userprofile': (context) => const NotificationScreen(),
+        '/usertips': (context) => const UserTipsScreen(),
 
         //admin
         '/adminhome': (context) => const AdminHomeScreen(),
         '/adminreport': (context) => const AdminReportDetailScreen(status: ''),
+        '/admintips': (context) => const AdminTipsScreen(),
       },
     );
   }

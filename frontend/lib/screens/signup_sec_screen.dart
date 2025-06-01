@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class Signup2Screen extends StatefulWidget {
+  const Signup2Screen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignupScreenState createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<Signup2Screen> {
   // Controllers
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
-                  hintText: 'Email',
+                  hintText: 'Name',
                   hintStyle: TextStyle(color: Colors.grey[600]),
                   filled: true,
                   fillColor: const Color(0xFFE8F4FF), // very light blue
@@ -66,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _passwordController,
                 obscureText: _obscurePassword,
                 decoration: InputDecoration(
-                  hintText: 'Password',
+                  hintText: 'Tel.',
                   hintStyle: TextStyle(color: Colors.grey[600]),
                   filled: true,
                   fillColor: const Color(0xFFE8F4FF),
@@ -77,19 +77,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                     borderSide: BorderSide.none,
-                  ),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword
-                          ? Icons.visibility_off
-                          : Icons.visibility,
-                      color: Colors.blueAccent,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscurePassword = !_obscurePassword;
-                      });
-                    },
                   ),
                 ),
               ),
@@ -112,9 +99,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(25),
                   ),
                   child: TextButton(
-                    onPressed: () {
-                      // TODO: Implement sign-in logic
-                    },
+                    onPressed:
+                        () => Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/signup',
+                          (route) => false,
+                        ),
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
                       shape: RoundedRectangleBorder(
@@ -122,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     child: const Text(
-                      'Sign In',
+                      'Next',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -140,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    "Don't have an account? ",
+                    "Already have an account? ",
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.black87,
@@ -151,11 +141,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     onTap:
                         () => Navigator.pushNamedAndRemoveUntil(
                           context,
-                          '/signup2',
+                          '/login',
                           (route) => false,
                         ),
                     child: const Text(
-                      'Sign Up',
+                      'Sign In',
                       style: TextStyle(
                         fontSize: 14,
                         color: Color(0xFF4A90E2), // the same darker blue
