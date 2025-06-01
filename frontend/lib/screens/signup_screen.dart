@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignupScreenState createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   // Controllers
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -23,11 +23,23 @@ class _LoginScreenState extends State<LoginScreen> {
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // A bit of top padding so the logo isn't flush to the status bar
-              const SizedBox(height: 200),
+              // ==== Top-left back icon ====
+              IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.black),
+                onPressed:
+                    () => Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/signup2',
+                      (route) => false,
+                    ),
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+              ),
 
-              // ==== Logo Image ====
+              // A bit of top padding so the logo isn't flush to the status bar
+              const SizedBox(height: 160),
               Center(
                 child: Image.asset(
                   'assets/image/logo_namsai.png',
@@ -94,8 +106,44 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
 
+              const SizedBox(height: 16),
+
+              // ==== Confirm Password TextField ====
+              TextFormField(
+                controller: _passwordController,
+                obscureText: _obscurePassword,
+                decoration: InputDecoration(
+                  hintText: 'Confirm Password',
+                  hintStyle: TextStyle(color: Colors.grey[600]),
+                  filled: true,
+                  fillColor: const Color(0xFFE8F4FF),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 16,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide.none,
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscurePassword
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      color: Colors.blueAccent,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
+                  ),
+                ),
+              ),
+
               const SizedBox(height: 32),
 
+              // ==== "Sign Up" Button ====
               Center(
                 child: Container(
                   width: 120, // <-- Set your desired button width here
@@ -113,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   child: TextButton(
                     onPressed: () {
-                      // TODO: Implement sign-in logic
+                      // TODO: Implement sign-up logic
                     },
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
@@ -122,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     child: const Text(
-                      'Sign In',
+                      'Sign Up',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -134,39 +182,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
 
               const SizedBox(height: 230),
-
-              // ==== "Don't have an account? Sign Up" ====
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Don't have an account? ",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap:
-                        () => Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/signup2',
-                          (route) => false,
-                        ),
-                    child: const Text(
-                      'Sign Up',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF4A90E2), // the same darker blue
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 16),
             ],
           ),
         ),
