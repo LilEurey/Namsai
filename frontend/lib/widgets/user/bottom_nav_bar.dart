@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
 
-  const BottomNavBar({super.key, required this.currentIndex});
+  const BottomNavBar({super.key, required this.currentIndex, required Null Function(dynamic i) onTap});
 
   void _navigate(BuildContext context, int index) {
-    final routes = ['/uservideotips', '/userhome', '/userprofile'];
+    final routes = ['/usertips', '/userhome', '/profile'];
     if (ModalRoute.of(context)?.settings.name != routes[index]) {
       Navigator.pushNamedAndRemoveUntil(
         context,

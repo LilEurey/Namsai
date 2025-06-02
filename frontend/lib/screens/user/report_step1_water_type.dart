@@ -11,34 +11,51 @@ class ReportStep1WaterType extends StatefulWidget {
 class _ReportStep1WaterTypeState extends State<ReportStep1WaterType> {
   String? selectedWaterType;
   final TextEditingController detailsController = TextEditingController();
+  final TextEditingController customWaterTypeController =
+      TextEditingController();
 
   void _goToStep2() {
-    if (selectedWaterType != null) {
-      Navigator.pushNamed(
-        context,
-        '/reportStep2',
-        arguments: {
-          'waterType': selectedWaterType,
-          'details': detailsController.text,
-        },
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a water type')),
-      );
+    final trimmedWaterType = selectedWaterType?.trim() ?? '';
+    final trimmedDetails = detailsController.text.trim();
+    final customWaterType = customWaterTypeController.text.trim();
+
+    if (trimmedWaterType.isEmpty || trimmedDetails.isEmpty) {
+      _showError('Please select a water type and enter details');
+      return;
     }
+
+    if (trimmedWaterType == 'Other' && customWaterType.isEmpty) {
+      _showError('Please specify your custom water type');
+      return;
+    }
+
+    Navigator.pushNamed(
+      context,
+      '/reportStep2',
+      arguments: {
+        'waterType': trimmedWaterType,
+        'details': trimmedDetails,
+        'customWaterType': trimmedWaterType == 'Other' ? customWaterType : '',
+      },
+    );
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
   Widget build(BuildContext context) {
-    final waterTypes = ['Canal', 'River', 'Lake', 'Pond', 'Drian', 'Other'];
+    final waterTypes = ['Canal', 'River', 'Lake', 'Pond', 'Drain', 'Other'];
 
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           children: [
-            // Banner at the top
+            // Banner
             SizedBox(
               height: 120,
               width: double.infinity,
@@ -55,45 +72,24 @@ class _ReportStep1WaterTypeState extends State<ReportStep1WaterType> {
             ),
 
             const SizedBox(height: 8),
-
-            // Back button and New Report text aligned
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back, color: Colors.black),
-                    onPressed:
-                        () => Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/userhome',
-                          (route) => false,
-                        ),
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
-                  ),
-                  const SizedBox(width: 8),
-                  const Text(
+                  Text(
                     'New Report',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
             ),
-
             const SizedBox(height: 12),
-
-            // Progress bar
             const ReportStepProgressBar(
               currentStep: 1,
               stepLabels: ['Water Type', 'Location', 'Report Submitted'],
             ),
 
-            // Form content
+            // Form
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -116,6 +112,18 @@ class _ReportStep1WaterTypeState extends State<ReportStep1WaterType> {
                             (val) => setState(() => selectedWaterType = val),
                       );
                     }).toList(),
+
+                    if (selectedWaterType == 'Other') ...[
+                      const SizedBox(height: 6),
+                      TextField(
+                        controller: customWaterTypeController,
+                        decoration: const InputDecoration(
+                          labelText: 'Enter custom water type',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ],
+
                     const SizedBox(height: 16),
                     const Text(
                       'Details',
@@ -142,7 +150,7 @@ class _ReportStep1WaterTypeState extends State<ReportStep1WaterType> {
               ),
             ),
 
-            // Next button
+            // Next Button
             Padding(
               padding: const EdgeInsets.only(right: 20, bottom: 20),
               child: Align(

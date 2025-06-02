@@ -23,15 +23,21 @@ export const createReport = async (req, res) => {
       return res.status(400).json({ error: 'Invalid coordinates format' });
     }
 
-    // ✅ Ensure createdBy is converted to ObjectId
+    // ✅ Validate createdBy before converting to ObjectId
+    if (!createdBy || !mongoose.Types.ObjectId.isValid(createdBy)) {
+      return res.status(400).json({ error: 'Invalid createdBy user ID' });
+    }
+
     const userId = new mongoose.Types.ObjectId(createdBy);
 
     // 🔁 Check for duplicate report
     const existingReport = await Report.findOne({
       createdBy: userId,
-      location_description: { $regex: `^${location_description.trim()}$`, $options: 'i' },
+      location_description: {
+        $regex: `^${location_description.trim()}$`,
+        $options: 'i',
+      },
     });
-
 
     if (existingReport) {
       return res.status(400).json({
@@ -129,8 +135,10 @@ export const getReportsByUserId = async (req, res) => {
 export const getReportsByCurrentUser = async (req, res) => {
   try {
     const userId = req.user.userId; // ✅ from decoded token
-    const reports = await Report.find({ createdBy: userId }).populate('createdBy', 'name');;
-    res.status(200).json(reports);
+    const reports = await Report.find({ createdBy: userId }).populate('createdBy', 'name');
+
+    // ✅ Return reports wrapped in an object
+    res.status(200).json({ reports });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

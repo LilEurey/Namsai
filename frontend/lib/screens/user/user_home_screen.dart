@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:frontend/services/report_services.dart';
 import 'package:frontend/widgets/user/bottom_nav_bar.dart';
 import 'package:frontend/widgets/user/notification_button.dart';
@@ -15,9 +16,6 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   List<Map<String, dynamic>> reports = [];
   bool isLoading = true;
 
-  final String token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODNiY2I3ZjFlZDZmN2VkZDhiZDhjMGEiLCJpYXQiOjE3NDg3OTM1ODMsImV4cCI6MTc0ODc5NzE4M30.jD02i-ree3Jd48QoFSJV_-7rysDPoNeReFzPWyT_0qc';
-
   @override
   void initState() {
     super.initState();
@@ -26,9 +24,17 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
   Future<void> fetchReports() async {
     try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+
+      if (token == null) {
+        throw Exception('User not logged in');
+      }
+
       final fetchedReports = await ReportService.getUserReports(token);
+
       setState(() {
-        reports = List<Map<String, dynamic>>.from(fetchedReports);
+        reports = fetchedReports;
         isLoading = false;
       });
     } catch (e) {
@@ -97,12 +103,16 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                               '${thailandTime.hour.toString().padLeft(2, '0')}:${thailandTime.minute.toString().padLeft(2, '0')}';
                         } catch (_) {}
 
-                        final coordinatesRaw =
-                            report['coordinates']['coordinates'] as List;
-                        final coordinates =
-                            coordinatesRaw
-                                .map((e) => (e as num).toDouble())
-                                .toList();
+                        final coordinates = <double>[0.0, 0.0];
+                        try {
+                          final coords = report['coordinates']?['coordinates'];
+                          if (coords is List) {
+                            coordinates.clear();
+                            for (final e in coords) {
+                              coordinates.add((e as num).toDouble());
+                            }
+                          }
+                        } catch (_) {}
 
                         return ReportCard(
                           name: report['createdBy']?['name'] ?? 'Unknown',
@@ -128,7 +138,15 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: const BottomNavBar(currentIndex: 1),
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: 1,
+        onTap: (index) {
+          // handle user navigation
+          if (index == 0) Navigator.pushNamed(context, '/userHome');
+          if (index == 1) Navigator.pushNamed(context, '/notification');
+          if (index == 2) Navigator.pushNamed(context, '/profile');
+        },
+      ),
     );
   }
 }

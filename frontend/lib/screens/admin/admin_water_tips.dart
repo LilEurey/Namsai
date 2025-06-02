@@ -279,7 +279,14 @@ class _AdminTipsScreenState extends State<AdminTipsScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: const BottomNavBar(currentIndex: 1),
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: 1,
+        onTap: (index) {
+          if (index == 0) Navigator.pushNamed(context, '/adminHome');
+          if (index == 1) Navigator.pushNamed(context, '/adminReport');
+          if (index == 2) Navigator.pushNamed(context, '/adminProfile');
+        },
+      ),
     );
   }
 }

@@ -1,33 +1,43 @@
-// 📁 lib/screens/user/report_step2_location.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
-// ignore: unused_import
-import 'package:geocoding/geocoding.dart';
+import 'package:frontend/services/auth_service.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:frontend/widgets/user/report_step_progress_bar.dart';
 import 'package:frontend/services/geo_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ReportStep2Location extends StatefulWidget {
-  final String waterType;
-  final String details;
-
-  const ReportStep2Location({
-    Key? key,
-    required this.waterType,
-    required this.details,
-  }) : super(key: key);
+  const ReportStep2Location({super.key, required String waterType, required String details, required String customWaterType});
 
   @override
-  _ReportStep2LocationState createState() => _ReportStep2LocationState();
+  State<ReportStep2Location> createState() => _ReportStep2LocationState();
 }
 
 class _ReportStep2LocationState extends State<ReportStep2Location> {
+  late String waterType;
+  late String details;
+  late String customWaterType;
+
   LatLng? currentLocation;
   final TextEditingController addressController = TextEditingController();
   final MapController mapController = MapController();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    if (args == null) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => _showError('Missing data from previous step'),
+      );
+      Navigator.pop(context);
+      return;
+    }
+    waterType = args['waterType'] ?? '';
+    details = args['details'] ?? '';
+    customWaterType = args['customWaterType'] ?? '';
+  }
 
   Future<void> _searchAddress() async {
     final rawInput = addressController.text.trim();
@@ -35,31 +45,17 @@ class _ReportStep2LocationState extends State<ReportStep2Location> {
       _showError('Please enter an address.');
       return;
     }
-
     final fullQuery =
         rawInput.contains('Thailand')
             ? rawInput
             : '$rawInput, Bangkok, Thailand';
-
-    print('🔍 Searching for: $fullQuery');
-
     final coordinates = await GeoService.getCoordinatesFromAddress(fullQuery);
-
     if (coordinates == null) {
       _showError('❌ Failed to find coordinates.');
       return;
     }
-
-    setState(() {
-      currentLocation = coordinates;
-    });
-
+    setState(() => currentLocation = coordinates);
     mapController.move(coordinates, 16);
-  }
-
-  Future<String?> _getUserId() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('userId');
   }
 
   Future<void> _submitReport() async {
@@ -67,19 +63,19 @@ class _ReportStep2LocationState extends State<ReportStep2Location> {
       _showError('Please enter a valid address.');
       return;
     }
-    final userId = await _getUserId();
-  if (userId == null || userId.length != 24) {
-    _showError('User ID not found or invalid. Please log in again.');
-    return;
-  }
-
+    final userId = await AuthService.getUserId();
+    if (userId == null || userId.length != 24) {
+      _showError('User ID not found or invalid.');
+      return;
+    }
     Navigator.pushNamed(
       context,
       '/reportStep3',
       arguments: {
-        'waterType': widget.waterType,
-        'details': widget.details, // ✅ use previous step value
-        'location_description': addressController.text, // ✅ use user input here
+        'waterType': waterType,
+        'details': details,
+        'customWaterType': customWaterType,
+        'location_description': addressController.text,
         'coordinates': {
           'type': 'Point',
           'coordinates': [
@@ -93,9 +89,11 @@ class _ReportStep2LocationState extends State<ReportStep2Location> {
   }
 
   void _showError(String message) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(message)));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(message)));
+    });
   }
 
   @override

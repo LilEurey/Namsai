@@ -101,7 +101,14 @@ class NotificationScreen extends StatelessWidget {
       ),
 
       // Bottom Navigation Bar
-      bottomNavigationBar: const BottomNavBar(currentIndex: 1),
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: 1,
+        onTap: (index) {
+          if (index == 0) Navigator.pushNamed(context, '/userHome');
+          if (index == 1) Navigator.pushNamed(context, '/notification');
+          if (index == 2) Navigator.pushNamed(context, '/profile');
+        },
+      ),
     );
   }
 }

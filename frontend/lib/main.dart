@@ -35,7 +35,7 @@ class NamSaiApp extends StatelessWidget {
       routes: {
         '/': (context) => const FirstPage(),
         '/login': (context) => const LoginScreen(),
-        '/profile': (context) => const ProfileScreen(),
+        '/profile': (context) => const ProfilePage(),
         '/signup': (context) => const SignupScreen(),
         '/signup2': (context) => const Signup2Screen(),
 
@@ -43,7 +43,11 @@ class NamSaiApp extends StatelessWidget {
         '/userhome': (context) => const UserHomeScreen(),
         '/reportStep1': (context) => const ReportStep1WaterType(),
         '/reportStep2':
-            (context) => const ReportStep2Location(waterType: '', details: ''),
+            (context) => const ReportStep2Location(
+              waterType: '',
+              details: '',
+              customWaterType: '',
+            ),
         '/reportStep3': (context) => const ReportStep3Submitted(reportData: {}),
         '/usernoti': (context) => const NotificationScreen(),
         '/usertips': (context) => const UserTipsScreen(),

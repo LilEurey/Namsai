@@ -1,6 +1,6 @@
 import { Router } from 'express';
 const router = Router();
-import { createReport, getAllReports, getReportsByUserId, updateReportStatus, deleteReportById, getReportsByCurrentUser } from '../controllers/report_controller.js';
+import { createReport, getAllReports, updateReportStatus, deleteReportById, getReportsByCurrentUser } from '../controllers/report_controller.js';
 import { verifyToken } from '../middleware/authMiddleware.js';
 
 //for user
