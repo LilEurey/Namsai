@@ -41,7 +41,8 @@ export const getUserReports = async (req, res) => {
 
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password, tel, role } = req.body;
+    const { name, email, password, tel } = req.body;
+    const role = req.body.role || 'user';
 
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ error: 'Email already in use' });

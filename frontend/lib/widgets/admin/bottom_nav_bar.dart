@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
 
-  const BottomNavBar({super.key, required this.currentIndex, required Null Function(dynamic i) onTap});
+  const BottomNavBar({super.key, required this.currentIndex, required Null Function(dynamic index) onTap});
 
   void _navigate(BuildContext context, int index) {
-    final routes = ['/adminvideotips', '/adminhome', '/adminprofile'];
+    final routes = ['/admintips', '/adminhome', '/profile'];
     if (ModalRoute.of(context)?.settings.name != routes[index]) {
       Navigator.pushNamedAndRemoveUntil(
         context,
@@ -19,7 +19,6 @@ class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      // Wrap with Material to apply elevation
       elevation: 8,
       child: BottomNavigationBar(
         currentIndex: currentIndex,

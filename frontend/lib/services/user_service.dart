@@ -12,4 +12,6 @@ class UserService {
       throw Exception('Failed to fetch user');
     }
   }
+
+  
 }

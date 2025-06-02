@@ -6,6 +6,7 @@ import cors from 'cors';
 import userRoutes from './routes/user_routes.js';
 import reportRoutes from './routes/report_routes.js';
 
+
 dotenv.config();
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(cors()); // Allow all origins
 
 app.use('/api/users', userRoutes);
 app.use('/api/reports', reportRoutes);
+
 
 // Connect to MongoDB Atlas
 mongoose.connect(process.env.DATABASE_URL)

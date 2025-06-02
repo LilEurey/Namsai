@@ -29,7 +29,12 @@ class _LoginScreenState extends State<LoginScreen> {
       final result = await AuthService.login(email: email, password: password);
 
       if (result['success']) {
-        Navigator.pushReplacementNamed(context, '/userhome');
+        final role = result['role'];
+        if (role == 'admin') {
+          Navigator.pushReplacementNamed(context, '/adminhome');
+        } else {
+          Navigator.pushReplacementNamed(context, '/userhome');
+        }
       } else {
         _showError(result['message']);
       }
@@ -148,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
           onTap:
               () => Navigator.pushNamedAndRemoveUntil(
                 context,
-                '/signup2',
+                '/signup',
                 (route) => false,
               ),
           child: const Text(

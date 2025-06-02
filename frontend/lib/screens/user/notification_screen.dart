@@ -1,114 +1,89 @@
-import 'package:flutter/material.dart';
-import 'package:frontend/widgets/user/bottom_nav_bar.dart';
-import 'package:frontend/widgets/user/notification_button.dart';
+// import 'package:flutter/material.dart';
+// import 'package:frontend/services/notification_service.dart';
+// import 'package:frontend/widgets/user/bottom_nav_bar.dart';
 
-class NotificationScreen extends StatelessWidget {
-  const NotificationScreen({Key? key}) : super(key: key);
+// class NotificationScreen extends StatefulWidget {
+//   const NotificationScreen({Key? key}) : super(key: key);
 
-  final List<Map<String, String>> notifications = const [
-    {
-      'title': 'All Fixed!',
-      'message': 'The issue you reported has been resolved. Thank you!',
-    },
-    {
-      'title': 'Thanks for your patience!',
-      'message': 'Your report is currently under review.',
-    },
-    {
-      'title': 'We’ve got it!',
-      'message': 'Your report has been received and is being reviewed.',
-    },
-  ];
+//   @override
+//   State<NotificationScreen> createState() => _NotificationScreenState();
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          // Banner
-          SizedBox(
-            height: 120,
-            width: double.infinity,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(32),
-                bottomRight: Radius.circular(32),
-              ),
-              child: Image.asset('assets/image/banner.png', fit: BoxFit.cover),
-            ),
-          ),
+// class _NotificationScreenState extends State<NotificationScreen> {
+//   List<Map<String, dynamic>> notifications = [];
+//   bool isLoading = true;
 
-          // Header
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  'Notification',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-                NotificationButton(),
-              ],
-            ),
-          ),
+//   @override
+//   void initState() {
+//     super.initState();
+//     fetchNotifications();
+//   }
 
-          const SizedBox(height: 8),
+//   Future<void> fetchNotifications() async {
+//     try {
+//       final userId = 'USER_ID'; // Replace with logged-in user ID
+//       final fetched = await NotificationService.fetchUserNotifications(userId);
+//       setState(() {
+//         notifications = fetched;
+//         isLoading = false;
+//       });
+//     } catch (e) {
+//       setState(() => isLoading = false);
+//       print('Error: $e');
+//     }
+//   }
 
-          // Notifications List
-          Expanded(
-            child: ListView.separated(
-              itemCount: notifications.length,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              separatorBuilder: (_, __) => const Divider(height: 24),
-              itemBuilder: (context, index) {
-                final notif = notifications[index];
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Icon(Icons.check_circle, color: Color(0xFFB3D9F5)),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            notif['title']!,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            notif['message']!,
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-        ],
-      ),
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       // ... same banner and header
+//       body:
+//           isLoading
+//               ? const Center(child: CircularProgressIndicator())
+//               : ListView.separated(
+//                 itemCount: notifications.length,
+//                 padding: const EdgeInsets.symmetric(horizontal: 20),
+//                 separatorBuilder: (_, __) => const Divider(height: 24),
+//                 itemBuilder: (context, index) {
+//                   final notif = notifications[index];
+//                   return Row(
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//                     children: [
+//                       const Icon(Icons.check_circle, color: Color(0xFFB3D9F5)),
+//                       const SizedBox(width: 12),
+//                       Expanded(
+//                         child: Column(
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: [
+//                             Text(
+//                               notif['title'] ?? '',
+//                               style: const TextStyle(
+//                                 fontWeight: FontWeight.bold,
+//                                 fontSize: 16,
+//                               ),
+//                             ),
+//                             const SizedBox(height: 4),
+//                             Text(
+//                               notif['message'] ?? '',
+//                               style: const TextStyle(fontSize: 14),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     ],
+//                   );
+//                 },
+//               ),
 
-      // Bottom Navigation Bar
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: 1,
-        onTap: (index) {
-          if (index == 0) Navigator.pushNamed(context, '/userHome');
-          if (index == 1) Navigator.pushNamed(context, '/notification');
-          if (index == 2) Navigator.pushNamed(context, '/profile');
-        },
-      ),
-    );
-  }
-}
+//       // Bottom Navigation Bar
+//       bottomNavigationBar: BottomNavBar(
+//         currentIndex: 1,
+//         onTap: (index) {
+//           if (index == 1) Navigator.pushNamed(context, '/userHome');
+//           if (index == 0) Navigator.pushNamed(context, '/usertips');
+//           if (index == 2) Navigator.pushNamed(context, '/profile');
+//         },
+//       ),
+//     );
+//   }
+// }

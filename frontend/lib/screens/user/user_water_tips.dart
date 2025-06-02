@@ -215,10 +215,10 @@ class _UserTipsScreenState extends State<UserTipsScreen> {
         ],
       ),
       bottomNavigationBar: BottomNavBar(
-        currentIndex: 1,
+        currentIndex: 0,
         onTap: (index) {
-          if (index == 0) Navigator.pushNamed(context, '/userHome');
-          if (index == 1) Navigator.pushNamed(context, '/notification');
+          if (index == 1) Navigator.pushNamed(context, '/userhome');
+          if (index == 0) Navigator.pushNamed(context, '/usertips');
           if (index == 2) Navigator.pushNamed(context, '/profile');
         },
       ),

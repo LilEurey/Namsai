@@ -10,7 +10,8 @@ class ReportService {
     required String detail,
     required String locationDescription,
     required Map<String, dynamic> coordinates,
-    required String createdBy, required String customWaterType,
+    required String createdBy,
+    required String customWaterType,
   }) async {
     final response = await http.post(
       Uri.parse(baseUrl),
@@ -52,6 +53,61 @@ class ReportService {
     } else {
       final error = jsonDecode(response.body);
       throw Exception(error['error'] ?? 'Failed to load reports');
+    }
+  }
+
+  static Future<List<Map<String, dynamic>>> fetchReports() async {
+    try {
+      final res = await http.get(Uri.parse(baseUrl));
+
+      if (res.statusCode == 200) {
+        final List data = json.decode(res.body);
+        return data.cast<Map<String, dynamic>>();
+      } else {
+        throw Exception('Failed to load reports');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
+
+  static Future<void> updateReportStatus(
+    String reportId,
+    String newStatus,
+  ) async {
+    final url = Uri.parse('http://localhost:3000/api/reports/$reportId/status');
+
+    final response = await http.patch(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'status': newStatus}),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to update report status');
+    }
+  }
+
+  static Future<void> deleteReport(String reportId) async {
+    final url = Uri.parse('http://localhost:3000/api/reports/$reportId');
+
+    final response = await http.delete(url);
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete report');
+    }
+  }
+
+  static Future<List<Map<String, dynamic>>> fetchUserNotifications(
+    String userId,
+  ) async {
+    final url = Uri.parse('http://localhost:3000/api/notifications/$userId');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      return List<Map<String, dynamic>>.from(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to fetch notifications');
     }
   }
 }

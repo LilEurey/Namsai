@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/widgets/user/report_card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:frontend/services/report_services.dart';
 import 'package:frontend/widgets/user/bottom_nav_bar.dart';
 import 'package:frontend/widgets/user/notification_button.dart';
-import 'package:frontend/widgets/user/report_card.dart';
 
 class UserHomeScreen extends StatefulWidget {
   const UserHomeScreen({Key? key}) : super(key: key);
@@ -142,8 +142,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
         currentIndex: 1,
         onTap: (index) {
           // handle user navigation
-          if (index == 0) Navigator.pushNamed(context, '/userHome');
-          if (index == 1) Navigator.pushNamed(context, '/notification');
+          if (index == 1) Navigator.pushNamed(context, '/userhome');
+          if (index == 0) Navigator.pushNamed(context, '/notification');
           if (index == 2) Navigator.pushNamed(context, '/profile');
         },
       ),

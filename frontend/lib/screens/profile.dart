@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:frontend/services/auth_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:frontend/widgets/user/bottom_nav_bar.dart';
+import 'package:frontend/widgets/admin/bottom_nav_bar.dart' as admin;
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -18,6 +20,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String name = '';
   String email = '';
   String tel = '';
+  String role = 'user';
   bool isLoading = true;
 
   @override
@@ -29,6 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> _fetchUserData() async {
     final prefs = await SharedPreferences.getInstance();
     final userId = prefs.getString('userId');
+    final userRole = prefs.getString('userRole');
 
     if (userId == null) {
       setState(() => isLoading = false);
@@ -46,6 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
           name = data['name'] ?? '';
           email = data['email'] ?? '';
           tel = data['tel'] ?? '';
+          role = userRole ?? 'user';
           isLoading = false;
         });
       } else {
@@ -118,8 +123,14 @@ class _ProfilePageState extends State<ProfilePage> {
                           const Spacer(),
                           Center(
                             child: OutlinedButton(
-                              onPressed: () {
-                                // TODO: Log out logic
+                              onPressed: () async {
+                                await AuthService.logout();
+                                if (!mounted) return;
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  '/login',
+                                  (route) => false,
+                                );
                               },
                               style: OutlinedButton.styleFrom(
                                 side: const BorderSide(
@@ -151,18 +162,28 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ],
               ),
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: 2,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushNamed(context, '/userHome');
-          } else if (index == 1) {
-            Navigator.pushNamed(context, '/notification');
-          } else if (index == 2) {
-            // Current profile page
-          }
-        },
-      ),
+      bottomNavigationBar:
+          role == 'admin'
+              ? admin.BottomNavBar(
+                currentIndex: 2,
+                onTap: (index) {
+                  if (index == 1) {
+                    Navigator.pushNamed(context, '/adminhome');
+                  } else if (index == 0) {
+                    Navigator.pushNamed(context, '/admintips');
+                  }
+                },
+              )
+              : BottomNavBar(
+                currentIndex: 2,
+                onTap: (index) {
+                  if (index == 1) {
+                    Navigator.pushNamed(context, '/userHome');
+                  } else if (index == 0) {
+                    Navigator.pushNamed(context, '/usertips');
+                  }
+                },
+              ),
     );
   }
 

@@ -10,7 +10,7 @@ import 'package:frontend/screens/user/user_home_screen.dart';
 
 import 'screens/signup_screen.dart';
 import 'screens/admin/admin_water_tips.dart';
-import 'screens/admin/admin_reprort_detail.dart';
+import 'screens/admin/admin_report_detail.dart';
 import 'screens/login_screen.dart';
 import 'screens/profile.dart';
 
@@ -47,7 +47,7 @@ class NamSaiApp extends StatelessWidget {
               customWaterType: '',
             ),
         '/reportStep3': (context) => const ReportStep3Submitted(reportData: {}),
-        '/usernoti': (context) => const NotificationScreen(),
+        // '/usernoti': (context) => const NotificationScreen(),
         '/usertips': (context) => const UserTipsScreen(),
 
         //admin

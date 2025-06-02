@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/widgets/user/bottom_nav_bar.dart';
+import 'package:frontend/widgets/admin/bottom_nav_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AdminTipsScreen extends StatefulWidget {
@@ -280,11 +280,11 @@ class _AdminTipsScreenState extends State<AdminTipsScreen> {
         ],
       ),
       bottomNavigationBar: BottomNavBar(
-        currentIndex: 1,
+        currentIndex: 0,
         onTap: (index) {
-          if (index == 0) Navigator.pushNamed(context, '/adminHome');
-          if (index == 1) Navigator.pushNamed(context, '/adminReport');
-          if (index == 2) Navigator.pushNamed(context, '/adminProfile');
+          if (index == 1) Navigator.pushNamed(context, '/adminhome');
+          if (index == 0) Navigator.pushNamed(context, '/admintips');
+          if (index == 2) Navigator.pushNamed(context, '/profile');
         },
       ),
     );
