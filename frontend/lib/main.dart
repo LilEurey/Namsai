@@ -9,7 +9,6 @@ import 'package:frontend/screens/user/user_water_tips.dart';
 import 'package:frontend/screens/user/user_home_screen.dart';
 
 import 'screens/signup_screen.dart';
-import 'screens/signup_sec_screen.dart';
 import 'screens/admin/admin_water_tips.dart';
 import 'screens/admin/admin_reprort_detail.dart';
 import 'screens/login_screen.dart';
@@ -37,7 +36,6 @@ class NamSaiApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/profile': (context) => const ProfilePage(),
         '/signup': (context) => const SignupScreen(),
-        '/signup2': (context) => const Signup2Screen(),
 
         //user
         '/userhome': (context) => const UserHomeScreen(),
