@@ -56,50 +56,90 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-          child: Column(
-            children: [
-              const SizedBox(height: 200),
-              Image.asset(
-                'assets/image/logo_namsai.png',
-                width: 120,
-                height: 120,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            // Top-right banner
+            Positioned(
+              top: 0,
+              right: -70,
+              child: Image.asset(
+                'assets/image/banner2.png',
+                width: 357,
+                height: 300,
+                fit: BoxFit.contain,
               ),
-              const SizedBox(height: 48),
-              TextFormField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: _inputDecoration('Email'),
+            ),
+            // Bottom-left banner
+            Positioned(
+              bottom: -85,
+              left: -30,
+              child: Image.asset(
+                'assets/image/banner3.png',
+                width: 310,
+                height: 260,
+                fit: BoxFit.contain,
               ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _passwordController,
-                obscureText: _obscurePassword,
-                decoration: _inputDecoration('Password').copyWith(
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword
-                          ? Icons.visibility_off
-                          : Icons.visibility,
-                      color: Colors.blueAccent,
-                    ),
-                    onPressed:
-                        () => setState(
-                          () => _obscurePassword = !_obscurePassword,
-                        ),
+            ),
+            // Main scrollable login form
+            SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24.0,
+                vertical: 16.0,
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(height: 200),
+                  Image.asset(
+                    'assets/image/logo_namsai.png',
+                    width: 120,
+                    height: 120,
                   ),
-                ),
+                  const SizedBox(height: 48),
+
+                  // Email field
+                  TextFormField(
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: _inputDecoration('Email'),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Password field
+                  TextFormField(
+                    controller: _passwordController,
+                    obscureText: _obscurePassword,
+                    decoration: _inputDecoration('Password').copyWith(
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscurePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.blueAccent,
+                        ),
+                        onPressed: () {
+                          setState(() => _obscurePassword = !_obscurePassword);
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+
+                  // Sign In button or loader
+                  _isLoading
+                      ? const CircularProgressIndicator()
+                      : _buildSignInButton(),
+
+                  const SizedBox(height: 230),
+
+                  // "Don't have an account? Sign Up"
+                  _buildSignupText(),
+
+                  const SizedBox(height: 16),
+                ],
               ),
-              const SizedBox(height: 32),
-              _isLoading
-                  ? const CircularProgressIndicator()
-                  : _buildSignInButton(),
-              const SizedBox(height: 230),
-              _buildSignupText(),
-              const SizedBox(height: 16),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

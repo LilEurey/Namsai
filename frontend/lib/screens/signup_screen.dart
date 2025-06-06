@@ -96,7 +96,7 @@ class _SignupScreenState extends State<SignupScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 95),
+                  const SizedBox(height: 100),
                   const Text(
                     'Create account',
                     style: TextStyle(
@@ -168,7 +168,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 120),
+                  const SizedBox(height: 250),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

@@ -64,104 +64,84 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
-      body:
-          isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : Column(
+      body: SingleChildScrollView(
+        // กรณีจอเล็กจะเลื่อนขึ้นลงได้
+        child: Column(
+          children: [
+            // 1) Banner ด้านบน ความสูง 160
+            SizedBox(
+              height: 160,
+              width: double.infinity,
+              child: Image.asset('assets/image/banner.png', fit: BoxFit.cover),
+            ),
+
+            const SizedBox(height: 16),
+
+            // 3) ข้อมูลโปรไฟล์ + ปุ่ม Logout
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 200,
-                    child: Stack(
-                      children: [
-                        ClipPath(
-                          clipper: WaveClipper(),
-                          child: Container(height: 200, color: _darkBlue),
-                        ),
-                        ClipPath(
-                          clipper: WaveClipper(),
-                          child: Container(height: 180, color: _lightBlue),
-                        ),
-                        Positioned(
-                          top: 100,
-                          left: 0,
-                          right: 0,
-                          child: Center(
-                            child: CircleAvatar(
-                              radius: 50,
-                              backgroundColor: Colors.grey.shade200,
-                              child: Icon(
-                                Icons.person,
-                                size: 60,
-                                color: Colors.grey.shade600,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  const Text(
+                    'Profile',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 16),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Profile',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                          _buildInfoRow('Name', name),
-                          _buildInfoRow('E-mail', email),
-                          _buildInfoRow('Tel.', tel),
-                          const Spacer(),
-                          Center(
-                            child: OutlinedButton(
-                              onPressed: () async {
-                                await AuthService.logout();
-                                if (!mounted) return;
-                                Navigator.pushNamedAndRemoveUntil(
-                                  context,
-                                  '/login',
-                                  (route) => false,
-                                );
-                              },
-                              style: OutlinedButton.styleFrom(
-                                side: const BorderSide(
-                                  color: _darkBlue,
-                                  width: 1.5,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 32,
-                                  vertical: 12,
-                                ),
-                              ),
-                              child: const Text(
-                                'Log out',
-                                style: TextStyle(
-                                  color: _darkBlue,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 32),
-                        ],
+                  const SizedBox(height: 24),
+                  _buildInfoRow('Name', name),
+                  _buildInfoRow('E-mail', email),
+                  _buildInfoRow('Tel.', tel),
+                  const SizedBox(height: 150),
+                  Center(
+                    child: OutlinedButton(
+                      onPressed: () async {
+                        await AuthService.logout();
+                        if (!mounted) return;
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/login',
+                          (route) => false,
+                        );
+                      },
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: _darkBlue, width: 1.5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 32,
+                          vertical: 12,
+                        ),
+                      ),
+
+                      child: const Text(
+                        'Log out',
+                        style: TextStyle(
+                          color: _darkBlue,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),
+                  const SizedBox(height: 32),
                 ],
               ),
+            ),
+          ],
+        ),
+      ),
+
+      // 4) Bottom navigation bar แยก user/​admin
       bottomNavigationBar:
           role == 'admin'
               ? admin.BottomNavBar(
@@ -204,6 +184,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
+/// คลิปเปอร์คลื่น (WaveClipper) เหมือนเดิม
 class WaveClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {

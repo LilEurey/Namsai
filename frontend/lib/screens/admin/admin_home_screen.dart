@@ -278,13 +278,6 @@ class _AdminHomeScreenState extends State<AdminHomeScreen>
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.notifications,
-                              color: Colors.black87,
-                            ),
-                            onPressed: () {},
-                          ),
                         ],
                       ),
                     ),
@@ -320,7 +313,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen>
       bottomNavigationBar: BottomNavBar(
         currentIndex: 1,
         onTap: (index) {
-          if (index == 0) Navigator.pushNamed(context, '/adminreport');
+          if (index == 0) Navigator.pushNamed(context, '/usertips');
           if (index == 1) Navigator.pushNamed(context, '/adminhome');
           if (index == 2) Navigator.pushNamed(context, '/adminprofile');
         },
