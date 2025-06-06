@@ -236,6 +236,7 @@ class AdminReportDetailScreen extends StatelessWidget {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
+                            backgroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
@@ -373,7 +374,7 @@ class AdminReportDetailScreen extends StatelessWidget {
                     ),
                     child: Text(
                       actionText,
-                      style: const TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ),
                 ),

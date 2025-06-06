@@ -51,7 +51,7 @@ class ReportCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: SizedBox(
-              height: 120,
+              height: 120, // ลดจาก 120 เป็น 100
               width: double.infinity,
               child: FlutterMap(
                 options: MapOptions(
@@ -85,14 +85,20 @@ class ReportCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text(
+            name,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          ),
           const SizedBox(height: 4),
-          Text("Title: $water_type", style: const TextStyle(fontSize: 14)),
+          Text(
+            "Title: $water_type",
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+          ),
           const SizedBox(height: 4),
           SizedBox(
-            height: 50,
+            height: 40, // ลดจาก 50 เป็น 40
             child: SingleChildScrollView(
-              child: Text(detail, style: const TextStyle(fontSize: 12)),
+              child: Text(detail, style: const TextStyle(fontSize: 14)),
             ),
           ),
           const SizedBox(height: 8),
