@@ -143,14 +143,25 @@ class _ReportStep3SubmittedState extends State<ReportStep3Submitted> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF7CB8E2),
-                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    backgroundColor: const Color(0xFF59A5D8),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8, // ลดจาก 14 → 8
+                      horizontal: 16, // กำหนดความกว้างภายใน ปรับได้ตามต้องการ
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
+                    minimumSize: const Size(
+                      100,
+                      36,
+                    ), // กำหนดความกว้าง-สูง ให้เล็กลง
                   ),
-                  child: const Text('Done', style: TextStyle(fontSize: 18)),
+                  child: const Text(
+                    'Done',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
                 ),
+
                 const SizedBox(height: 16),
               ],
             ),

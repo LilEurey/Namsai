@@ -7,7 +7,12 @@ import 'package:frontend/widgets/user/report_step_progress_bar.dart';
 import 'package:frontend/services/geo_service.dart';
 
 class ReportStep2Location extends StatefulWidget {
-  const ReportStep2Location({super.key, required String waterType, required String details, required String customWaterType});
+  const ReportStep2Location({
+    super.key,
+    required String waterType,
+    required String details,
+    required String customWaterType,
+  });
 
   @override
   State<ReportStep2Location> createState() => _ReportStep2LocationState();
@@ -217,7 +222,7 @@ class _ReportStep2LocationState extends State<ReportStep2Location> {
                 ),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 30),
             ElevatedButton(
               onPressed: _submitReport,
               style: ElevatedButton.styleFrom(
@@ -230,8 +235,15 @@ class _ReportStep2LocationState extends State<ReportStep2Location> {
                   borderRadius: BorderRadius.circular(32),
                 ),
               ),
-              child: const Text('Submit', style: TextStyle(fontSize: 18)),
+              child: const Text(
+                'Submit',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white, // กำหนดสีตัวอักษรเป็นขาว
+                ),
+              ),
             ),
+
             const SizedBox(height: 20),
           ],
         ),

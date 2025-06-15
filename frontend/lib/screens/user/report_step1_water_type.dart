@@ -48,122 +48,202 @@ class _ReportStep1WaterTypeState extends State<ReportStep1WaterType> {
 
   @override
   Widget build(BuildContext context) {
-    final waterTypes = ['Canal', 'River', 'Lake', 'Pond', 'Drain', 'Other'];
+    // รายการประเภทน้ำ
+    final waterTypes = ['Canal', 'River', 'Lake', 'Pond', 'Drain', 'Other:'];
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Banner
-            SizedBox(
-              height: 120,
-              width: double.infinity,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(32),
-                  bottomRight: Radius.circular(32),
-                ),
-                child: Image.asset(
-                  'assets/image/banner.png',
-                  fit: BoxFit.cover,
-                ),
+      body: Stack(
+        children: [
+          // ── 1) Banner (สูง 160) ───────────────────────────────────────
+          SizedBox(
+            height:
+                160, // ใช้ขนาดเดียวกับหน้าก่อนหน้า เพื่อให้ตำแหน่งข้อความสอดคล้องกัน
+            width: double.infinity,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(32),
+                bottomRight: Radius.circular(32),
               ),
+              child: Image.asset('assets/image/banner.png', fit: BoxFit.cover),
             ),
+          ),
 
-            const SizedBox(height: 8),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+          // ── 2) วางข้อความ "New Report" ทับบน Banner ─────────────────
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
               child: Row(
-                children: [
+                children: const [
                   Text(
                     'New Report',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                      shadows: [Shadow(color: Colors.white70, blurRadius: 2)],
+                    ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 12),
-            const ReportStepProgressBar(
-              currentStep: 1,
-              stepLabels: ['Water Type', 'Location', 'Report Submitted'],
+          ),
+
+          // ── 3) เนื้อหา (ProgressBar + ฟอร์ม) ────────────────────────────
+          //      เริ่มจากขอบบนเท่ากับ ความสูง Banner (160) + SafeArea vertical padding (16)
+          Padding(
+            // top: 160 + 16 + ปรับช่องว่างเพิ่มเติม (4) = 180
+            padding: const EdgeInsets.only(
+              top: 180,
+              left: 20,
+              right: 20,
+              bottom: 80,
             ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // ── Progress Bar ────────────────────────────────────────────
+                const ReportStepProgressBar(
+                  currentStep: 1,
+                  stepLabels: ['Water Type', 'Location', 'Report Submitted'],
+                ),
 
-            // Form
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: ListView(
-                  children: [
-                    const SizedBox(height: 12),
-                    const Text(
-                      'Select Water Type',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                const SizedBox(height: 24),
+
+                // ── แบบฟอร์มเลือกประเภทน้ำ ───────────────────────────────────
+                const Text(
+                  'Select Water Type',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 12),
+
+                // RadioListTile แต่ละประเภทน้ำ พร้อมเปลี่ยนสีวงกลมเมื่อถูกเลือก
+                ...waterTypes.map((type) {
+                  return RadioListTile<String>(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                    dense: true,
+                    title: Text(
+                      type,
+                      style: const TextStyle(color: Colors.black87),
                     ),
-                    ...waterTypes.map((type) {
-                      return RadioListTile<String>(
-                        title: Text(type),
-                        value: type,
-                        groupValue: selectedWaterType,
-                        onChanged:
-                            (val) => setState(() => selectedWaterType = val),
-                      );
-                    }).toList(),
+                    value: type,
+                    groupValue: selectedWaterType,
+                    activeColor: const Color(0xFF7CB8E2),
+                    // activeColor จะกำหนดสีวงกลม (dot + outline) เมื่อถูกเลือก
+                    onChanged: (val) => setState(() => selectedWaterType = val),
+                  );
+                }).toList(),
 
-                    if (selectedWaterType == 'Other') ...[
-                      const SizedBox(height: 6),
-                      TextField(
-                        controller: customWaterTypeController,
-                        decoration: const InputDecoration(
-                          labelText: 'Enter custom water type',
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                    ],
-
-                    const SizedBox(height: 16),
-                    const Text(
-                      'Details',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                if (selectedWaterType == 'Other:') ...[
+                  const SizedBox(height: 8),
+                  TextField(
+                    controller: customWaterTypeController,
+                    style: const TextStyle(
+                      color: Color(
+                        0xFF7CB8E2,
+                      ), // ข้อความที่พิมพ์จะเป็นสีฟ้าเมื่อเลือก
                     ),
-                    const SizedBox(height: 6),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFD9EBFF),
+                    decoration: InputDecoration(
+                      labelText: 'Enter custom water type',
+                      labelStyle: const TextStyle(color: Color(0xFF7CB8E2)),
+                      border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: TextField(
-                        controller: detailsController,
-                        maxLines: 5,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Tell us more...',
+                        borderSide: const BorderSide(
+                          color: Color(0xFF7CB8E2),
+                          width: 2,
                         ),
                       ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: const BorderSide(
+                          color: Color(0xFF7CB8E2),
+                          width: 2,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: const BorderSide(
+                          color: Color(0xFF7CB8E2),
+                          width: 2,
+                        ),
+                      ),
+                      hintStyle: const TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                ],
+
+                const SizedBox(height: 24),
+
+                // ── กล่องกรอกรายละเอียด ───────────────────────────────────────
+                const Text(
+                  'Details',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE6F5FF),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: TextField(
+                    controller: detailsController,
+                    maxLines: 5,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Tell us more...',
+                    ),
+                  ),
+                ),
+
+                const Spacer(), // ดึงปุ่มไปชิดล่าง เพื่อเว้นระยะจากเนื้อหาให้สวยงาม
+              ],
+            ),
+          ),
+
+          // ── 4) ปุ่ม Next (Gradient Circular Button) ──────────────────────
+          Positioned(
+            bottom: 30,
+            right: 24,
+            child: GestureDetector(
+              onTap: _goToStep2,
+              child: Container(
+                width: 56,
+                height: 56,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color(0xFF59A5D8),
+                      Color(0xFF91C7EB),
+                      Color(0xFFCAE9FF),
+                    ],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 4,
+                      offset: Offset(0, 2),
                     ),
                   ],
                 ),
-              ),
-            ),
-
-            // Next Button
-            Padding(
-              padding: const EdgeInsets.only(right: 20, bottom: 20),
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: FloatingActionButton(
-                  onPressed: _goToStep2,
-                  backgroundColor: const Color(0xFF7CB8E2),
-                  child: const Icon(Icons.arrow_forward),
+                child: const Center(
+                  child: Icon(
+                    Icons.arrow_forward,
+                    size: 32,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

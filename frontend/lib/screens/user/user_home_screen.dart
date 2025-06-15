@@ -1,9 +1,10 @@
+// lib/screens/user_home_screen.dart
+
 import 'package:flutter/material.dart';
 import 'package:frontend/widgets/user/report_card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:frontend/services/report_services.dart';
 import 'package:frontend/widgets/user/bottom_nav_bar.dart';
-import 'package:frontend/widgets/user/notification_button.dart';
 
 class UserHomeScreen extends StatefulWidget {
   const UserHomeScreen({Key? key}) : super(key: key);
@@ -49,37 +50,36 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
+          // 1) Banner image at the very top
           SizedBox(
             height: 160,
             width: double.infinity,
             child: Image.asset('assets/image/banner.png', fit: BoxFit.cover),
           ),
+
+          // 2) Header row: “My Reports” (remove bell icon)
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    'My Reports',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                      shadows: [Shadow(color: Colors.white70, blurRadius: 2)],
-                    ),
-                  ),
-                  NotificationButton(),
-                ],
+              padding: const EdgeInsets.only(top: 80, left: 20, right: 20),
+              child: const Text(
+                'My Reports',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                  shadows: [Shadow(color: Colors.white70, blurRadius: 2)],
+                ),
               ),
             ),
           ),
+
+          // 3) Report list
           Padding(
             padding: const EdgeInsets.only(
               top: 172,
               left: 20,
               right: 20,
-              bottom: 80,
+              // bottom: 90, // removed so background extends to bottom
             ),
             child:
                 isLoading
@@ -87,11 +87,13 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     : reports.isEmpty
                     ? const Center(child: Text('No reports found'))
                     : ListView.separated(
+                      padding: const EdgeInsets.only(bottom: 90),
                       itemCount: reports.length,
                       separatorBuilder: (_, __) => const SizedBox(height: 12),
                       itemBuilder: (context, index) {
                         final report = reports[index];
 
+                        // Format updatedAt into Thailand time
                         String updatedAtFormatted = 'Unknown';
                         try {
                           final rawDate = report['updatedAt'];
@@ -103,6 +105,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                               '${thailandTime.hour.toString().padLeft(2, '0')}:${thailandTime.minute.toString().padLeft(2, '0')}';
                         } catch (_) {}
 
+                        // Parse coordinates safely
                         final coordinates = <double>[0.0, 0.0];
                         try {
                           final coords = report['coordinates']?['coordinates'];
@@ -125,23 +128,46 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       },
                     ),
           ),
+
+          // 4) Circular “+” icon (custom Container instead of FloatingActionButton)
           Positioned(
-            bottom: 90,
+            bottom: 60, // position just above the BottomNavBar
             right: 24,
-            child: FloatingActionButton(
-              backgroundColor: const Color(0xFF7CB8E2),
-              onPressed: () {
+            child: GestureDetector(
+              onTap: () {
                 Navigator.pushNamed(context, '/reportStep1');
               },
-              child: const Icon(Icons.add, size: 28),
+              child: Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  color: Colors.white, // background circle is white
+                  shape: BoxShape.circle,
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color.fromARGB(60, 0, 0, 0),
+                      blurRadius: 6,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: const Center(
+                  child: Icon(
+                    Icons.add,
+                    size: 28,
+                    color: Color(0xFF59A5D8), // “+” is blue
+                  ),
+                ),
+              ),
             ),
           ),
         ],
       ),
+
+      // 5) Custom BottomNavBar at the bottom
       bottomNavigationBar: BottomNavBar(
         currentIndex: 1,
         onTap: (index) {
-          // handle user navigation
           if (index == 1) Navigator.pushNamed(context, '/userhome');
           if (index == 0) Navigator.pushNamed(context, '/notification');
           if (index == 2) Navigator.pushNamed(context, '/profile');
