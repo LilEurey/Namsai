@@ -41,7 +41,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
     try {
       final res = await http.get(
-        Uri.parse('http://localhost:3000/api/users/$userId'),
+        Uri.parse(
+          'https://badeesorn.pawarisa.com/intproj/app4api/api/users/$userId',
+        ),
       );
 
       if (res.statusCode == 200) {
