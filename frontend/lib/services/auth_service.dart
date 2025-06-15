@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  static const String baseUrl = 'http://localhost:3000/api/users/login';
+  static const String baseUrl = 'https://badeesorn.pawarisa.com/intproj/app4api/api/users/login';
 
   static Future<Map<String, dynamic>> login({
     required String email,
@@ -61,7 +61,7 @@ class AuthService {
     required String password,
     required String tel,
   }) async {
-    final url = Uri.parse('http://localhost:3000/api/users/register');
+    final url = Uri.parse('https://badeesorn.pawarisa.com/intproj/app4api/api/users/register');
 
     try {
       final response = await http.post(

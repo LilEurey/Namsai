@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ReportService {
-  static const String baseUrl = 'http://localhost:3000/api/reports';
+  static const String baseUrl = 'https://badeesorn.pawarisa.com/intproj/app4api/api/reports';
 
   /// Create new report
   static Future<Map<String, dynamic>> createReport({
@@ -75,7 +75,7 @@ class ReportService {
     String reportId,
     String newStatus,
   ) async {
-    final url = Uri.parse('http://localhost:3000/api/reports/$reportId/status');
+    final url = Uri.parse('https://badeesorn.pawarisa.com/intproj/app4api/api/reports/$reportId/status');
 
     final response = await http.patch(
       url,
@@ -89,7 +89,7 @@ class ReportService {
   }
 
   static Future<void> deleteReport(String reportId) async {
-    final url = Uri.parse('http://localhost:3000/api/reports/$reportId');
+    final url = Uri.parse('https://badeesorn.pawarisa.com/intproj/app4api/api/reports/$reportId');
 
     final response = await http.delete(url);
 
@@ -101,7 +101,7 @@ class ReportService {
   static Future<List<Map<String, dynamic>>> fetchUserNotifications(
     String userId,
   ) async {
-    final url = Uri.parse('http://localhost:3000/api/notifications/$userId');
+    final url = Uri.parse('https://badeesorn.pawarisa.com/intproj/app4api/api/notifications/$userId');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {

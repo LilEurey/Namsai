@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class UserService {
-  static const String baseUrl = 'http://localhost:3000/api/users';
+  static const String baseUrl =
+      'https://badeesorn.pawarisa.com/intproj/app4api/api/users';
 
   static Future<Map<String, dynamic>> getUserById(String id) async {
     final response = await http.get(Uri.parse('$baseUrl/$id'));
@@ -12,6 +13,4 @@ class UserService {
       throw Exception('Failed to fetch user');
     }
   }
-
-  
 }
