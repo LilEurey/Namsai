@@ -160,7 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 currentIndex: 2,
                 onTap: (index) {
                   if (index == 1) {
-                    Navigator.pushNamed(context, '/userHome');
+                    Navigator.pushNamed(context, '/userhome');
                   } else if (index == 0) {
                     Navigator.pushNamed(context, '/usertips');
                   }

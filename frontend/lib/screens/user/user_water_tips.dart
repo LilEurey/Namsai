@@ -36,15 +36,15 @@ class _UserTipsScreenState extends State<UserTipsScreen> {
 
   // ลิสต์ Infographics ที่แก้ให้ Info2 กับ Info7 เป็น .PNG
   final List<String> _assetInfographics = [
-    'image/Info1.JPG',
-    'image/Info2.PNG',
-    'image/Info3.JPG',
-    'image/Info4.JPG',
-    'image/Info5.JPG',
-    'image/Info6.JPG',
-    'image/Info7.PNG',
-    'image/Info8.JPG',
-    'image/Info9.JPG',
+    'assets/image/Info1.JPG',
+    'assets/image/Info2.PNG',
+    'assets/image/Info3.JPG',
+    'assets/image/Info4.JPG',
+    'assets/image/Info5.JPG',
+    'assets/image/Info6.JPG',
+    'assets/image/Info7.PNG',
+    'assets/image/Info8.JPG',
+    'assets/image/Info9.JPG',
   ];
 
   @override

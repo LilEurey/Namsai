@@ -123,11 +123,17 @@ class _ReportStep2LocationState extends State<ReportStep2Location> {
               ),
             ),
             const SizedBox(height: 8),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
                 children: [
-                  Text(
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back, color: Colors.black),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/reportStep1');
+                    },
+                  ),
+                  const Text(
                     'New Report',
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),

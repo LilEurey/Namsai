@@ -169,7 +169,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
         currentIndex: 1,
         onTap: (index) {
           if (index == 1) Navigator.pushNamed(context, '/userhome');
-          if (index == 0) Navigator.pushNamed(context, '/notification');
+          if (index == 0) Navigator.pushNamed(context, '/usertips');
           if (index == 2) Navigator.pushNamed(context, '/profile');
         },
       ),

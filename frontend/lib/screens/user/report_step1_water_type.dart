@@ -74,8 +74,14 @@ class _ReportStep1WaterTypeState extends State<ReportStep1WaterType> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
               child: Row(
-                children: const [
-                  Text(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back, color: Colors.black),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/userhome');
+                    },
+                  ),
+                  const Text(
                     'New Report',
                     style: TextStyle(
                       fontSize: 24,

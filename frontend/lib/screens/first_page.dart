@@ -16,7 +16,7 @@ class FirstPage extends StatelessWidget {
         onTap: () => _navigateToLogin(context),
         child: Center(
           child: Image.asset(
-            'assets/image/Logo_namsai.png',
+            'assets/image/logo_namsai.png',
             width: 120,
             height: 120,
             fit: BoxFit.contain,
